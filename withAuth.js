@@ -2,9 +2,11 @@ import jwt from 'jsonwebtoken';
 
 
 function withAuth(req, res, next){
+    console.log('with auth')
     const headers = req.headers;
+    console.log('function with auth', headers)
     try {
-        const payload = jwt.verify(headers.authorization, process.env.JWT_SECRET);
+        const payload = jwt.verify(headers.authorization, process.env.JWT_SECRET); //trouver comment verifier jwt d'utilisateur
         console.log("payload", payload);
 
         req.payload = payload;

@@ -19,10 +19,7 @@ app.use(cors());
 import MongoDBClient from './database.js';
 
 /**routes */
-import userRoutes from './routes/userRoutes.js';
-import authRoutes from './routes/authRoutes.js';
-// import messageRoutes from './routes/messageRoutes';
-// import notificationRoutes from './routes/notificationRoutes';
+import routes from "./config/routes.js";
 
 /**socket io*/
 import http from 'http';
@@ -52,8 +49,8 @@ io.on('connection', (socket) => {
 });
 
 /**routes must be outside of io.on  */
-  userRoutes(app);
-  authRoutes(app);
+  routes(app);
+  // authRoutes(app);
   // messageRoutes(app, io);
   // notificationRoutes(app, io)
 
