@@ -1,10 +1,9 @@
 
 import Mongoose from "mongoose";
-import { convertUNIXtoISO } from "../utils.js";
 
-const hourlyWeatherSchema = new Mongoose.Schema(
+const historicalWeatherSchema = new Mongoose.Schema(
     {
-        dt: { type: Date,  set: d => convertUNIXtoISO(d) },
+        dt: { type: Date,  required: true },
         main: {
           temp: {type: Number, required: true},
           feels_like: {type: Number, required: true},
@@ -27,12 +26,12 @@ const hourlyWeatherSchema = new Mongoose.Schema(
             description:{type: String, required: true},
             icon: {type: String, required: true}
           }
-        ]
+        ],
+        zip : {type: String, required: true}
       },
-    
     )
     
 
-const hourlyWeatherModel = Mongoose.model("Weather", hourlyWeatherSchema);
+const historicalWeatherModel = Mongoose.model("historicalweather", historicalWeatherSchema);
 
-export default hourlyWeatherModel;
+export default historicalWeatherModel;

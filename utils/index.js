@@ -20,6 +20,7 @@ const dateISO = date.toISOString();
 
 
 export function dateToTimestamp(dateString) {
+    console.log("dateToTimestamp", dateString);
     const [day, month, year] = dateString.split('/').map(Number);
   
     const date = new Date(`${year}-${month}-${day}`);
@@ -43,4 +44,5 @@ export function getTomorrowDate(dateString) {
   
 
 console.log("01/12/2022", dateToTimestamp("01/12/2022") )
+console.log("01/12/2022", convertUNIXtoISO(1659304800) )
   
