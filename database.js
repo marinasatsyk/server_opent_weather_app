@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
-const DB = "open_weather_app";
+const URI = `${process.env.URI_MONGO}${process.env.DB_NAME}`;
+const DB_NAME = `${process.env.DB_NAME}`;
 
-const URI = process.env.URI_MONGO;
 
 
 const MongoDBClient = {
@@ -13,7 +13,7 @@ const MongoDBClient = {
                     useNewUrlParser: true, 
                     useUnifiedTopology: true
                 })
-            client.then(() => console.log(`🎉 🎉 successfully connected to DB: ${DB}`))
+            client.then(() => console.log(`🎉 🎉 successfully connected to DB: ${DB_NAME}`))
         } catch(err) {
             throw Error(err)
         }

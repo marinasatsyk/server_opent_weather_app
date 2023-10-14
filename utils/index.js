@@ -1,3 +1,30 @@
+import mongoose from "mongoose";
+
+export function errorHandler(fn){
+    return async function(req, res, next){
+        try{
+            const result = await fn(req, res);
+            res.json(result)
+        }catch(err){
+            next(err)
+        }
+    }
+}
+
+
+export function withTransaction(fn){
+   
+    return async function(req, res, next){
+       let result;
+       
+       await mongoose.connection.transaction(async (session) => {
+        result  = await fn(req, res, session);
+        return result;
+       })
+       return result;
+    }
+}
+
 
 export function convertUNIXtoISO(timestampUnix) {
 if (!timestampUnix || !isValidTimestamp(timestampUnix)) return;
@@ -43,6 +70,8 @@ export function getTomorrowDate(dateString) {
 }
   
 
-console.log("01/12/2022", dateToTimestamp("01/12/2022") )
-console.log("01/12/2022", convertUNIXtoISO(1659304800) )
+
+
+// console.log("01/12/2022", dateToTimestamp("01/12/2022") )
+// console.log("01/12/2022", convertUNIXtoISO(1659304800) )
   

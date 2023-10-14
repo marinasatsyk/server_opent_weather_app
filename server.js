@@ -1,20 +1,13 @@
 /**express*/
 import express from 'express';
-const app = express();
-
-const PORT = 18500;
-
+import dotenv from "dotenv";
 /**json parser*/
 import bodyParser from 'body-parser';
-
 /**variable of environnement*/
-import "dotenv/config.js";
-// dotenv.config();
+ import "dotenv/config.js";
 
 /**cors restrictions*/
 import cors from 'cors';
-app.use(cors());
-
 /**mongo db*/
 import MongoDBClient from './database.js';
 
@@ -23,8 +16,18 @@ import routes from "./config/routes.js";
 
 /**socket io*/
 import http from 'http';
-const server = http.createServer(app);
 import { Server } from "socket.io";
+import cookieParser from 'cookie-parser';
+import { logger } from './src/logger/index.js';
+
+
+const app = express();
+dotenv.config();
+
+app.use(cors());
+
+/**socket io*/
+const server = http.createServer(app);
 const io = new Server(server);
 
 
@@ -35,6 +38,8 @@ const io = new Server(server);
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 
+//middleware for cookie
+app.use(cookieParser());
 
 /**implementation socket io server side*/
 io.on('connection', (socket) => {
@@ -55,9 +60,17 @@ io.on('connection', (socket) => {
   // notificationRoutes(app, io)
 
 /**start server WITH socket , so server.listen and not app.listen*/
-server.listen(PORT, () => {
-  console.log('Connecté au port' + PORT)
-  /**mongo db*/try{
+app.use((err, req, res, next) => {
+  logger.error(err.stack);
+  res.status(err.statusCode || 500)
+  .send({error: err.message})
+})
+
+server.listen(process.env.SERVER_PORT, () => {
+  console.log(`SERVER ready on : http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}`);
+  
+  /**mongo db*/
+  try{
     MongoDBClient.initialize()
   }
   catch(err){
